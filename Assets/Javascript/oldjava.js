@@ -1,3 +1,52 @@
+$(function () {
+    google.maps.event.addDomListener(window, "load", function () {
+        var fromLocations = new google.maps.places.Autocomplete(document.getElementById("start"));
+        var toLocations = new google.maps.places.Autocomplete(document.getElementById("end"));
+
+        google.maps.event.addListener(fromLocations, "change", function () {
+            var from = fromLocations.getPlace();
+            var fromAddress = from.formattedAddress;
+            $("#origin").val(fromAddress);
+        });
+        google.maps.event.addListener(toLocations, "change", function () {
+            var to = toLocations.getPlace();
+            var toAddress = to.formattedAddress;
+            $("#destination").val(toAddress);
+        });
+    });
+});
+
+function calcDistance() {
+    var origin = $("#origin").val();
+    var destination = $("#destination").val();
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destination: [destination],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.unitSystem.IMPERIAL,
+        }, callback);
+
+    function callback(response, status)
+    $("#distanceForm").submit(function (event) {
+        event.preventDefault();
+        calcDistance();
+    });
+};
+
+function callback(response, status) {
+    if (status != google.maps.DistanceMatrixService.OK) {
+        $("#result").html(err);
+    } else (
+        var origin = response.originAddresses[0];
+        var destination = response.destinationAddresses[0];
+        if (response.rows[0].elements.[0].status === "ZERO_RESULTS") {
+            
+        }
+    )
+}
+
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -59,7 +108,7 @@ function initAutocomplete() {
     searchBox1.addListener('places_changed', function () {
         var places1 = searchBox1.getPlaces();
         var places2 = searchBox2.getPlaces();
-        if (places1.length && places2.length == 0) {
+        if (places.length == 0) {
             return;
         }
         console.log(places1);

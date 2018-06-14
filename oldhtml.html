@@ -1,0 +1,37 @@
+`
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="assets/Styles/style.css">
+    <script>"https://cdnjs.cloudflare.com/ajax/libs/vue-google-maps/0.1.21/vue-google-maps.js"</script>
+    <script>"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"</script>
+    <title>Directions service</title>
+</head>
+
+<body>
+    <form id="distanceForm">
+        <b>Start: </b>
+        <!-- <div class="form"> -->
+            <input id="start" class="controls" type="text" placeholder="1st Address">
+            <input id="origin" type="hidden" name="origin" required>
+        <!-- </div> -->
+        <b>End: </b>
+        <!-- <div class="form"> -->
+            <input id="end" class="controls" type="text" placeholder="2nd Address">
+            <input id="destination" type="hidden" name="destination" required>
+        <!-- </div> -->
+        <input type="submit" value="Calculate" class="btn btn-primary">
+    </form>
+    <div id="result" ...></div>
+    <div id="midpoint"></div>
+    <div id="map"></div>
+
+    <script src="assets/Javascript/javascript.js"></script>
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs&libraries=places"></script> -->
+
+</body>
+
+</html>
