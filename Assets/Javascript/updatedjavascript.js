@@ -85,17 +85,19 @@ AutocompleteDirectionsHandler.prototype.route = function () {
         }
     });
 };
+
 // Create object to store location data and find midpoint
 let meet = {
     origin: [],
     destination: [],
     findMiddle: function () {
         // We are flat Earthers
-        this.theMiddle[0] = (this.origin[0] + this.destination[0]) / 2;
-        this.theMiddle[1] = (this.origin[1] + this.destination[1]) / 2;
+        this.theMiddle.lat = (this.origin[0] + this.destination[0]) / 2;
+        this.theMiddle.lng = (this.origin[1] + this.destination[1]) / 2;
     },
-    theMiddle: [],
+    theMiddle: {},
 }
+
 // Create click event
 $("button").click(function () {
     // Get user input and store
@@ -143,8 +145,37 @@ $("button").click(function () {
     setTimeout(function () {
         // Calculate midpoint
         meet.findMiddle();
-
         // Write midpoint to html
-        $("#middle").text(meet.theMiddle);
+        $("#middle").text(meet.theMiddle.lat + " " + meet.theMiddle.lng);
+
+
+        // Create function to make Yelp Ajax request
+        function getYelpData() {
+            jQuery.ajaxPrefilter(function (options) {
+                if (options.crossDomain && jQuery.support.cors) {
+                    options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+                }
+            });
+
+            const yelpURL = "https://api.yelp.com/v3/businesses/search?" +
+                "latitude=" + meet.theMiddle.lat +
+                "&longitude=" + meet.theMiddle.lng +
+                "&radius=" + 3000;
+
+            // Make API call
+            $.ajax({
+                url: yelpURL,
+                crossDomain: true,
+                method: "GET",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer gfAAsdu8zgOMbEu_1uAb1fMN4JtX982WdDD6dNgnkhbt0u4-nHcuAiL0uSZgRKkG3F4_I9wNNzBsFpZUo3K9RLz4VYswcm9FI44bf4s2S7hg_a8eqPBKnmKbmfUbW3Yx');
+                }
+            }).then(function (response) {
+                // Log response
+                console.log(response);
+            });
+        }
+        getYelpData();
     }, 1000);
-});
+    });
+    
