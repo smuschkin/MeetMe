@@ -9,9 +9,7 @@
 
 
   <!--    Stylesheet Files    -->
-  <link rel="stylesheet" href="css/normalize.css" />
-  <link rel="stylesheet" href="css/foundation.min.css" />
-  <link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="css/styles.css">
 
   <!--    Javascript files are placed before </body>    -->
 
@@ -84,7 +82,7 @@
             <span>More Details</span>
             <img src="img/btn_arrow.png" alt="" src="" class="arrow">
           </a>
-          
+
     </section>
     <!--    End Hero Caption    -->
         </div>
@@ -100,6 +98,39 @@
   </section>
        </div>
   <!--  End Hero Section  -->
+
+  <section class="meet-in-the-middle">
+    <div class="row">
+  <header role="banner">
+      <h3 class="small">
+        Search
+      </h3>
+    </header>
+  <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+
+      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
+  
+      <div id="mode-selector" class="controls">
+          <input type="radio" name="type" id="changemode-walking" checked="checked">
+          <label for="changemode-walking">Walking</label>
+  
+          <input type="radio" name="type" id="changemode-transit">
+          <label for="changemode-transit">Transit</label>
+  
+          <input type="radio" name="type" id="changemode-driving">
+          <label for="changemode-driving">Driving</label>
+      </div>
+      <button>Find Middle</button>
+     
+      <div class="result-container">
+      <div id="middle"></div>
+
+    </div>
+    <div class="row">
+      <div id="map" class="gmap-container"></div>
+    </div>
+    </div>
+    </section>
 
 
 
@@ -243,41 +274,7 @@
   </section>
   <!--  End Call To Action Section  -->
 
-  <section class="meet-in-the-middle">
-    <div class="row">
-  <header role="banner">
-      <h3 class="small">
-        Search
-      </h3>
-    </header>
-  <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
 
-      <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
-  
-      <div id="mode-selector" class="controls">
-          <input type="radio" name="type" id="changemode-walking" checked="checked">
-          <label for="changemode-walking">Walking</label>
-  
-          <input type="radio" name="type" id="changemode-transit">
-          <label for="changemode-transit">Transit</label>
-  
-          <input type="radio" name="type" id="changemode-driving">
-          <label for="changemode-driving">Driving</label>
-      </div>
-      <button>Find Middle</button>
-     
-      <div class="result-container">
-      <div id="middle"></div>
-
-    </div>
-    <div class="row">
-      <div id="map" style="height: 800px; width: 800px;"></div>
-    </div>
-    </div>
-    </section>
-
-  <!--  Start Map Section  -->
-  <section class="map" id="connect">
 
  
      <!-- <div class="form-wrap">
