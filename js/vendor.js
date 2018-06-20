@@ -1,183 +1,145 @@
-// Get new js calls
+// Function to find midpoint
+function findMiddle() {
+    // We are flat Earthers
+    theMiddle.lat = (locOne.lat + locTwo.lat) / 2;
+    theMiddle.lng = (locOne.lng + locTwo.lng) / 2;
+}
 
+// Google Map function
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        mapTypeControl: false,
-        center: { lat: -33.8688, lng: 151.2195 },
-        zoom: 13
-    });
-
-    new AutocompleteDirectionsHandler(map);
+    map = new google.maps.Map(
+        // Get div to insert map into
+        document.getElementById('map'),
+        // Specify map properties
+        { zoom: 11, center: theMiddle }
+    );
 }
 
-function AutocompleteDirectionsHandler(map) {
-    this.map = map;
-    this.originPlaceId = null;
-    this.destinationPlaceId = null;
-    this.travelMode = 'WALKING';
-    var originInput = document.getElementById('origin-input');
-    var destinationInput = document.getElementById('destination-input');
-    var modeSelector = document.getElementById('mode-selector');
-    this.directionsService = new google.maps.DirectionsService;
-    this.directionsDisplay = new google.maps.DirectionsRenderer;
-    this.directionsDisplay.setMap(map);
+// Create function to make Yelp Ajax request
+function getYelpData() {
+    jQuery.ajaxPrefilter(function (options) {
+        if (options.crossDomain && jQuery.support.cors) {
+            options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+        }
+    });
 
-    var originAutocomplete = new google.maps.places.Autocomplete(
-        originInput, { placeIdOnly: true });
-    var destinationAutocomplete = new google.maps.places.Autocomplete(
-        destinationInput, { placeIdOnly: true });
+    const yelpURL = "https://api.yelp.com/v3/businesses/search?" +
+        "latitude=" + theMiddle.lat +
+        "&longitude=" + theMiddle.lng +
+        "&term=" + activity +
+        "&radius=" + radius*1609;
 
-    this.setupClickListener('changemode-walking', 'WALKING');
-    this.setupClickListener('changemode-transit', 'TRANSIT');
-    this.setupClickListener('changemode-driving', 'DRIVING');
+    // Make API call
+    $.ajax({
+        url: yelpURL,
+        crossDomain: true,
+        method: "GET",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer gfAAsdu8zgOMbEu_1uAb1fMN4JtX982WdDD6dNgnkhbt0u4-nHcuAiL0uSZgRKkG3F4_I9wNNzBsFpZUo3K9RLz4VYswcm9FI44bf4s2S7hg_a8eqPBKnmKbmfUbW3Yx');
+        }
+    }).then(function (response) {
+        // Log response
+        console.log(response);
 
-    this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
-    this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+        // Hide input div
+        $("#start-screen").hide();
 
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+        // Show map
+        initMap();
+
+        // Add markers with labels of yelp results to map
+        const labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
+        for (i in response.businesses) {
+            var lat = response.businesses[i].coordinates.latitude;
+            var lng = response.businesses[i].coordinates.longitude;
+            new google.maps.Marker({
+                position: { lat, lng },
+                map: map,
+                label: labels[i]
+            });
+
+            var name = response.businesses[i].name;
+            var rating = response.businesses[i].rating;
+            // Add yelp results to html
+            addYelpDiv(labels[i], name, rating);
+
+        }
+        // function to add yelp results to html
+        function addYelpDiv(label, name, rating) {
+            // Create new div
+            let newDiv = $("<div>");
+            // Add class to div
+            newDiv.attr("class", "yelp-result");
+            // Append div to main yelp div
+            $("#yelp").append(newDiv);
+            // Add text to html
+            newDiv.text(label + ". " + name);
+            newDiv.append($("<p>").text("Rating: " + rating));
+        }
+
+    });
 }
 
-// Sets a listener on a radio button to change the filter type on Places
-// Autocomplete. ("This" is redefined by choosing a tavel mode.)
-AutocompleteDirectionsHandler.prototype.setupClickListener = function (id, mode) {
-    var radioButton = document.getElementById(id);
-    var me = this;
-    radioButton.addEventListener('click', function () {
-        me.travelMode = mode;
-        me.route();
-    });
-};
-// This "me" is redefined for the place selected. If not origin, it is the destination. This is function for destination. 
-AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (autocomplete, mode) {
-    var me = this;
-    autocomplete.bindTo('bounds', this.map);
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
-        if (!place.place_id) {
-            window.alert("Please select an option from the dropdown list.");
-            return;
-        }
-        if (mode === 'ORIG') {
-            me.originPlaceId = place.place_id;
-        } else {
-            me.destinationPlaceId = place.place_id;
-        }
-        me.route();
-    });
+// Define global object ot contain lat-lng coordinates
+let locOne = {};
+let locTwo = {};
+let theMiddle = {};
+let activity = "";
+let radius = 0;
+let map;
 
-};
-
-AutocompleteDirectionsHandler.prototype.route = function () {
-    if (!this.originPlaceId || !this.destinationPlaceId) {
-        return;
-    }
-    var me = this;
-
-    this.directionsService.route({
-        origin: { 'placeId': this.originPlaceId },
-        destination: { 'placeId': this.destinationPlaceId },
-        travelMode: this.travelMode
-    }, function (response, status) {
-        if (status === 'OK') {
-            me.directionsDisplay.setDirections(response);
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
-};
-
-// Create object to store location data and find midpoint
-let meet = {
-    origin: [],
-    destination: [],
-    findMiddle: function () {
-        // We are flat Earthers
-        this.theMiddle.lat = (this.origin[0] + this.destination[0]) / 2;
-        this.theMiddle.lng = (this.origin[1] + this.destination[1]) / 2;
-    },
-    theMiddle: {},
-}
+// Store google api key
+const googleAPIkey = "AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs";
 
 // Create click event
 $("button").click(function () {
     // Get user input and store
-    const myLoc = $("#origin-input").val();
-    const friendLoc = $("#destination-input").val();
+    const myLoc = $("#loc-one").val();
+    const friendLoc = $("#loc-two").val();
+    activity = $("#activity").val();
+    radius = $("#radius").val();
 
-    // Store google api key
-    const googleAPI = "AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs";
+    // Concatenate query url
+    let googleURL = "https://maps.googleapis.com/maps/api/geocode/json?" +
+        "address=" + myLoc +
+        "&key=" + googleAPIkey;
+    // console.log(URL);
 
-    // Create function to make API request and get location data
-    function getLatLng(query, person) {
-        // Concatenate query url
-        const URL = "https://maps.googleapis.com/maps/api/geocode/json?" +
-            "address=" + query +
-            "&key=" + googleAPI;
-        // console.log(URL);
+    // Make API request
+    var getLocOne = $.ajax({
+        url: googleURL,
+        method: "GET",
+    }),
 
-        // Make API request
-        $.ajax({
-            url: URL,
-            method: "GET",
-        }).then(function (response) {
+        getLocTwo = getLocOne.then(function (response) {
             // console log response
             console.log(response);
 
-            // Store lat lng coords
-            if (person === "me") {
-                meet.origin[0] = response.results["0"].geometry.location.lat;
-                meet.origin[1] = response.results["0"].geometry.location.lng;
-            } else if (person === "friend") {
-                meet.destination[0] = response.results["0"].geometry.location.lat;
-                meet.destination[1] = response.results["0"].geometry.location.lng;
-            } else { }
-        });
-    }
+            // Store locOne lat-lng coords
+            locOne.lat = response.results["0"].geometry.location.lat;
+            locOne.lng = response.results["0"].geometry.location.lng;
 
-    // Call function for both inputs
-    getLatLng(myLoc, "me");
-    getLatLng(friendLoc, "friend");
+            // Update googleURL for location two
+            let googleURL = "https://maps.googleapis.com/maps/api/geocode/json?" +
+                "address=" + friendLoc +
+                "&key=" + googleAPIkey;
 
-    // Delay one second before calculating midpoint.
-    // This is an easy but unelegant way to wait for the ajax requests
-    //  to complete before executing the findMiddle function.
-    // Ideally we should find a more elegant solution.
-    setTimeout(function () {
-        // Calculate midpoint
-        meet.findMiddle();
-        // Write midpoint to html
-        $("#middle").text(meet.theMiddle.lat + " " + meet.theMiddle.lng);
-
-
-        // Create function to make Yelp Ajax request
-        function getYelpData() {
-            jQuery.ajaxPrefilter(function (options) {
-                if (options.crossDomain && jQuery.support.cors) {
-                    options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
-                }
-            });
-
-            const yelpURL = "https://api.yelp.com/v3/businesses/search?" +
-                "latitude=" + meet.theMiddle.lat +
-                "&longitude=" + meet.theMiddle.lng +
-                "&radius=" + 3000;
-
-            // Make API call
-            $.ajax({
-                url: yelpURL,
-                crossDomain: true,
+            // Make locTwo Ajax request
+            return $.ajax({
+                url: googleURL,
                 method: "GET",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer gfAAsdu8zgOMbEu_1uAb1fMN4JtX982WdDD6dNgnkhbt0u4-nHcuAiL0uSZgRKkG3F4_I9wNNzBsFpZUo3K9RLz4VYswcm9FI44bf4s2S7hg_a8eqPBKnmKbmfUbW3Yx');
-                }
-            }).then(function (response) {
-                // Log response
-                console.log(response);
             });
-        }
+        });
+
+    getLocTwo.done(function (response) {
+        console.log(response);
+        locTwo.lat = response.results["0"].geometry.location.lat;
+        locTwo.lng = response.results["0"].geometry.location.lng;
+
+        // Find the midpoint
+        findMiddle();
+
+        // Return yelp Ajax request
         getYelpData();
-    }, 1000);
     });
-    
+});

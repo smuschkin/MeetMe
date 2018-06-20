@@ -9,9 +9,11 @@
 
 
   <!--    Stylesheet Files    -->
-<link rel="stylesheet" type="text/css" href="css/styles.css">
+<!-- Compressed CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.4.3/dist/css/foundation.min.css" integrity="sha256-GSio8qamaXapM8Fq9JYdGNTvk/dgs+cMLgPeevOYEx0= sha384-wAweiGTn38CY2DSwAaEffed6iMeflc0FMiuptanbN4J+ib+342gKGpvYRWubPd/+ sha512-QHEb6jOC8SaGTmYmGU19u2FhIfeG+t/hSacIWPpDzOp5yygnthL3JwnilM7LM1dOAbJv62R+/FICfsrKUqv4Gg==" crossorigin="anonymous">
 
   <!--    Javascript files are placed before </body>    -->
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
 
   <style>
     #middle {
@@ -19,6 +21,58 @@
       font-size: 1rem;
 
     }
+
+    .o-form {
+      margin-top: 1em;
+      background: #fbdd90;
+      padding: 0.75em 0;
+    }
+
+    button {
+      outline: thin solid #666;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+
+    .hero {
+    width: 100%;
+    height: 500px;
+    background: url(https://www.finpin.in/blog/content/images/2017/04/42903093_xxl--FILEminimizer-_new.jpg) no-repeat 50% 50%;
+    background-size: cover;
+    /* background-clip: padding-box; */
+    background-position: top;
+}
+    .hero .caption {
+      padding: 0.75em 0;
+      margin-top: 20%;
+    }
+
+    header {
+      height: 0.75em;
+    }
+    .o-section {
+      padding: 30px 0;
+    }
+    #start-screen {
+          margin: 20px 0;
+    }
+
+    .hero .caption h2.sub_cap {
+      font-weight: bold;
+    font-size: 30px;
+    line-height: 1;
+    }
+  .hero .caption h1.mean_cap {
+    font-size: 45px;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0.75em 0;
+  }
+
   </style>
 </head>
 
@@ -29,9 +83,9 @@
       <div class="row">
 
 
-        <nav class="top-bar" data-topbar role="navigation">
+      <!--  <nav class="top-bar" data-topbar role="navigation">
 
-          <!--    Start Logo    -->
+
           <ul class="title-area">
             <li class="name">
               <a href="#" class="logo">
@@ -49,7 +103,7 @@
           <!--    End Logo    -->
 
           <!--    Start Navigation Menu    -->
-          <section role="navigation" class="top-bar-section" id="mean_nav">
+        <!--  <section role="navigation" class="top-bar-section" id="mean_nav">
             <ul class="right">
               <li>
                 <a href="#services">find friends</a>
@@ -65,15 +119,15 @@
               </li>
             </ul>
           </section>
-          <!--    End Navigation Menu    -->
+          <!--    End Navigation Menu
 
-        </nav>
+        </nav> -->
       </div>
     </header>
 <div class="row">
     <!--    Start Hero Caption    -->
-   
-      
+
+
             <div class="small-12 medium-8 large-9 columns">
                  <section class="caption">
         <h1 class="mean_cap">Long Drives Suck...</h1>
@@ -86,51 +140,100 @@
     </section>
     <!--    End Hero Caption    -->
         </div>
- 
 
-    <section class="user-search">
-      <div class="small-12 medium-8 large-3 columns">
-        
-       
-      </div>
-    </section>
+
+
 
   </section>
-       </div>
+  </div>
   <!--  End Hero Section  -->
+  <!-- <section class="meet-in-the-middle">
 
-  <section class="meet-in-the-middle">
-    <div class="row">
   <header role="banner">
       <h3 class="small">
         Search
       </h3>
     </header>
-  <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
+      <div class="small-12 medium-3 large-6 columns">
 
+</div>
+<
+</section> -->
+<section class="services o-section">
+<div class="row">
+  <h1 class="mean_title">Plan your next trip and make seeing your friends fun!</h1>
+  <h2 class="sub_title">Enter your zips codes, plan your visit, enjoy!</h2>
+</div>
+</section>
+<form class="o-form">
+    <!--   <input id="origin-input" class="controls" type="text" placeholder="Enter an origin location">
       <input id="destination-input" class="controls" type="text" placeholder="Enter a destination location">
-  
-      <div id="mode-selector" class="controls">
+ <div id="mode-selector" class="controls">
           <input type="radio" name="type" id="changemode-walking" checked="checked">
           <label for="changemode-walking">Walking</label>
-  
+
           <input type="radio" name="type" id="changemode-transit">
           <label for="changemode-transit">Transit</label>
-  
+
           <input type="radio" name="type" id="changemode-driving">
           <label for="changemode-driving">Driving</label>
-      </div>
-      <button>Find Middle</button>
-     
-      <div class="result-container">
-      <div id="middle"></div>
+          <div class="row">
+            <button>Find Middle</button>
+          </div>
+      </div> -->
 
+      <div id="start-screen" class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="medium-6 cell">
+          <label>What's your location?
+            <input type="text" id="loc-one" placeholder="Your Location">
+          </label>
+        </div>
+        <div class="medium-6 cell">
+          <label>What's your friend's location?
+            <input type="text" id="loc-two" placeholder="Your Friend's Location">
+          </label>
+        </div>
+      </div>
+      <div class="grid-x grid-padding-x">
+        <div class="medium-6 cell">
+          <label>What do you want to do?
+            <input type="text" id="activity" placeholder="What do you want to do?">
+          </label>
+        </div>
+        <div class="medium-6 cell">
+          <label>
+Search radius (in miles)
+  <input type="number" id="radius" placeholder="Enter Radius">
+</label>
+        </div>
+      </div>
+      <div class="btn_holder">
+
+      <button type="button" class="btn_fancy">
+        meet in the middle
+
+      </button>
     </div>
-    <div class="row">
-      <div id="map" class="gmap-container"></div>
-    </div>
-    </div>
+      </div>
+</form>
+
+
+    <section>
+      <!--    Start Map Shadow    -->
+      <!--    End Map Shadow    -->
+      <div class="grid-container">
+        <div class="shadow"></div>
+
+
+      <div id="map"></div>
+       <div id="yelp"></div>
+
+      <div>
     </section>
+
+
+
 
 
 
@@ -138,10 +241,7 @@
   <section class="services" id="services">
 
     <!--    Start Services Titles    -->
-    <div class="row">
-      <h1 class="mean_title">Plan your next trip and make seeing your friends fun!</h1>
-      <h2 class="sub_title">Enter your zips codes, plan your visit, enjoy!</h2>
-    </div>
+
     <!--    End Services Titles    -->
 
     <!--    Start Services List    -->
@@ -276,7 +376,7 @@
 
 
 
- 
+
      <!-- <div class="form-wrap">
         <form action="" method="GET" name="search-form">
           <input type="text" id="origin-input" class="form-input" placeholder="Enter your Location" required>
@@ -284,17 +384,14 @@
           <button class="find-middle">Find Middle</button>
         </form>
       </div> -->
-    
-  
- 
 
-   
 
-    <!--    Start Map Shadow    -->
-    <div class="shadow"></div>
-    <!--    End Map Shadow    -->
 
-    <div id="map_container"></div>
+
+
+
+
+
   </section>
   <!--  End Map Section  -->
 
@@ -371,11 +468,14 @@
   <script type="text/javascript" src="js/jquery.js"></script>
 
   <script src="js/vendor.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs&libraries=places&callback=initMap"
-      async defer></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs">
+    </script>
+
+    <!-- Compressed JavaScript -->
   <script type="text/javascript" src="js/touchSwipe.min.js"></script>
   <script type="text/javascript" src="js/easing.js"></script>
-  <script type="text/javascript" src="js/foundation.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.4.3/dist/js/foundation.min.js" integrity="sha256-mRYlCu5EG+ouD07WxLF8v4ZAZYCA6WrmdIXyn1Bv9Vk= sha384-KzKofw4qqetd3kvuQ5AdapWPqV1ZI+CnfyfEwZQgPk8poOLWaabfgJOfmW7uI+AV sha512-0gHfaMkY+Do568TgjJC2iMAV0dQlY4NqbeZ4pr9lVUTXQzKu8qceyd6wg/3Uql9qA2+3X5NHv3IMb05wb387rA==" crossorigin="anonymous"></script>
+
   <script type="text/javascript" src="js/foundation/foundation.topbar.js"></script>
   <script type="text/javascript" src="js/carouFredSel.js"></script>
   <script type="text/javascript" src="js/scrollTo.js"></script>

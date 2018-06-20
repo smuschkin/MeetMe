@@ -3,6 +3,7 @@ meta.foundation-version{font-family:"/5.5.1/"}meta.foundation-mq-small{font-fami
 
 .gmap-container {
 	height: 800px;
-	width: 100%;
-	overflow: hidden;
+	width: auto;
+	position: relative;
+	margin-top: 30px;
 }
