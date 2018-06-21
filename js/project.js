@@ -1,14 +1,4 @@
-// // Get new js calls
-let meet = {
-    origin: [],
-    destination: [],
-    findMiddle: function () {
-        // We are flat Earthers
-        this.theMiddle.lat = (this.origin[0] + this.destination[0]) / 2;
-        this.theMiddle.lng = (this.origin[1] + this.destination[1]) / 2;
-    },
-    theMiddle: {},
-}
+// Define globals
 let origin = {};
 let destination = {};
 let theMiddle = {};
@@ -17,9 +7,9 @@ let radius = 0;
 let map;
 
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         mapTypeControl: false,
-        center: { lat: -33.8688, lng: 151.2195 },
+        center: { lat: 41.4993, lng: -81.6944 },
         zoom: 13
     });
 
@@ -107,8 +97,8 @@ AutocompleteDirectionsHandler.prototype.route = function () {
 // Create object to store location data and find midpoint
 function findMiddle() {
     // We are flat Earthers
-    meet.theMiddle.lat = (origin.lat + destination.lat) / 2;
-    meet.theMiddle.lng = (origin.lng + destination.lng) / 2;
+    theMiddle.lat = (origin.lat + destination.lat) / 2;
+    theMiddle.lng = (origin.lng + destination.lng) / 2;
 }
 
 const googleAPIkey = "AIzaSyAZ73W29ubLVV9YoW1dsMyob-ZlEiZWoPs";
@@ -173,8 +163,8 @@ function getYelpData() {
     });
 
     const yelpURL = "https://api.yelp.com/v3/businesses/search?" +
-        "latitude=" + meet.theMiddle.lat +
-        "&longitude=" + meet.theMiddle.lng +
+        "latitude=" + theMiddle.lat +
+        "&longitude=" + theMiddle.lng +
         "&term=" + activity +
         "&radius=" + radius * 1609;
 
@@ -190,7 +180,7 @@ function getYelpData() {
         // Log response
         console.log(response);
 
-        const labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
+        const labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
         for (i in response.businesses) {
             var lat = response.businesses[i].coordinates.latitude;
             var lng = response.businesses[i].coordinates.longitude;
